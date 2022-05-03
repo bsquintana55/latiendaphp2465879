@@ -41,7 +41,7 @@ Route::get('paises',function(){
                  "ciudades" => [
                     "Encamacion",  
                     "Paraguari",
-                    "villarica"
+                    "Villarica"
     ]]
 ];
 

@@ -52,7 +52,7 @@ class ProductoController extends Controller
         $p->nombre=$r->nombre;
         $p->desc=$r->desc;
         $p->precio=$r->precio;
-        $p->marca_id=$r->marca;
+        $p->marcas_id=$r->marca;
         $p->categoria_id=$r->categoria;
         //grabar el nuevo producto
         $p->save();

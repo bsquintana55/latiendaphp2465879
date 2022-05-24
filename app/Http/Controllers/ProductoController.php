@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
-use App\Models\Categoria;
 use App\Models\Marca;
+use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class ProductoController extends Controller
 {
@@ -16,7 +18,7 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        echo"aqui va a ir el catalogo de productos";
+       echo"aqui va el catalogo de productos";
     }
 
     /**
@@ -25,15 +27,15 @@ class ProductoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
+    
+
     {
-        //seleccionar y categorias y marcas 
         $marcas = Marca::all();
         $categorias = Categoria::all();
-
+   
         return view('productos.new')
-               ->with('marcas', $marcas)
-               ->with('categorias', $categorias);
-       
+         ->with('marcas', $marcas)
+         ->with('categorias', $categorias);
     }
 
     /**
@@ -44,21 +46,62 @@ class ProductoController extends Controller
      */
     public function store(Request $r)
     {
-        //crear entidad producto 
-        $p =new Producto;
-        //asignar valor a atributos
-        //del nuevo producto
+        //reglas de validacion
+        $reglas=[
+"nombre"=>'required|alpha',
+"desc"=>'required|min:10|max:50',
+"precio"=>'required|numeric',
+"marca" => 'required',
+"categoria" => 'required'
+];
+//mensajes personalizados por regla 
+$mensajes = [
+    "required" => "campos obligatorios",
+    "numeric" => "solo numeros",
+    "alpha" => "solo letras"
+];
 
+      
+//crear el objeto validador
+       $v = Validator ::make($r->all(),$reglas,$mensajes);
+       var_dump($v->fails());
+       
+       if($v->fails()){
+        return redirect('productos/create')
+        ->withErrors($v)
+        ->withInput();
+
+       }else{
+        $p= new Producto;
         $p->nombre=$r->nombre;
         $p->desc=$r->desc;
         $p->precio=$r->precio;
-        $p->marcas_id=$r->marca;
+        $p->marca_id=$r->marca;
         $p->categoria_id=$r->categoria;
-        //grabar el nuevo producto
+  
         $p->save();
-        echo"producto creado";
-    }
+       //Redirccionar a la ruta create
+       return redirect('productos/create')
+           ->with('mensaje','PRODUCTO REGISTRADO');
+       }
+       
+       /*
+        //crear identidad de producto
 
+      $p= new Producto;
+      $p->nombre=$r->nombre;
+      $p->desc=$r->desc;
+      $p->precio=$r->precio;
+      $p->marca_id=$r->marca;
+      $p->categoria_id=$r->categoria;
+
+      $p->save();
+     //Redirccionar a la ruta create
+     return redirect('productos/create')
+         ->with('mensaje','PRODUCTO REGISTRADO');*/
+
+    
+    }
     /**
      * Display the specified resource.
      *
@@ -67,7 +110,7 @@ class ProductoController extends Controller
      */
     public function show($producto)
     {
-        echo"aqui va la informacion del producto cuyo id es: $producto";
+       echo"aqui va la información del producto cuyo id es : $producto";
     }
 
     /**
@@ -76,9 +119,9 @@ class ProductoController extends Controller
      * @param  \App\Models\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function edit($producto)
+    public function edit( $producto)
     {
-            echo"aqui va el formulario de edicion del producto cuyo id es: $producto";
+       echo"aqui va el formulario de edición de producto cuyo id es : $producto";
     }
 
     /**

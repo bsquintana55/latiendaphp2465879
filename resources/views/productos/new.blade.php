@@ -15,7 +15,8 @@
   <div class="row">
       <form class='col s8'
          method="POST"
-         action="{{ route('productos.store')}}">
+         action="{{ route('productos.store')}}" 
+         enctype="multipart/form-data">
          @csrf
          <div class="row">
           <div class="input-field col s8">
@@ -53,7 +54,7 @@
            <select name="marca" id="marca" value="{{ old('marca')}}">
            <option value="">elija marca</option>
        @foreach($marcas as $marca)
-            <option value="{{ $marca->id}}">{{ $marca->nombre}}</option>
+            <option value="{{ $marca->id }}">{{ $marca->nombre}}</option>
        @endforeach
            </select>
            <label for="marca">Marca</label>
@@ -66,7 +67,7 @@
            <select name="categoria" id="categoria" value="{{ old('categoria')}}">
                <option value="">elija categoria</option>
        @foreach($categorias as $categoria)
-            <option value="{{ $categoria->id}}">{{ $categoria->nombre}}</option>
+            <option value="{{ $categoria->id }}">{{ $categoria->nombre}}</option>
        @endforeach 
            </select>
            <label for="categoria">Categoria</label>
@@ -81,11 +82,12 @@
             <div class="file-field input-field">
                 <div class="btn #90caf9 blue lighten-3">
                     <span>Imagen ...</span>
-                    <input type="file">
+                    <input type="file" name="imagen">
                 </div>
                 <div class="file-path-wrapper">
                     <input class="file-path validate" type="text">
                 </div>
+                <span>{{ $errors->first('imagen') }} </span>
             </div>
         </div>
         <div class="row">

@@ -48,17 +48,22 @@ class ProductoController extends Controller
     {
         //reglas de validacion
         $reglas=[
-"nombre"=>'required|alpha',
+"nombre"=>'required|alpha|unique:productos,nombre',
 "desc"=>'required|min:10|max:50',
 "precio"=>'required|numeric',
 "marca" => 'required',
-"categoria" => 'required'
+"categoria" => 'required',
+"imagen" => 'required|image'
+
 ];
 //mensajes personalizados por regla 
 $mensajes = [
     "required" => "campos obligatorios",
     "numeric" => "solo numeros",
-    "alpha" => "solo letras"
+    "alpha" => "solo letras",
+    "image" => "solo debe ingresar imagenes",
+    "unique"=> "nombre de producto ya registrado"
+ 
 ];
 
       
@@ -72,11 +77,21 @@ $mensajes = [
         ->withInput();
 
        }else{
+           //analizar el objeto file del request
+//asignar a la variable nombre archivo 
+           $nombre_archivo = $r->imagen->getClientOriginalName(); 
+           $archivo = $r->imagen;
+           //mover el archivo a la carpeta public 
+           var_dump(public_path());
+           $ruta = public_path().'/img';
+           $archivo->move($ruta, $nombre_archivo);
+
         $p= new Producto;
         $p->nombre=$r->nombre;
         $p->desc=$r->desc;
         $p->precio=$r->precio;
-        $p->marca_id=$r->marca;
+        $p->imagen=$nombre_archivo;
+        $p->marcas_id=$r->marca;
         $p->categoria_id=$r->categoria;
   
         $p->save();

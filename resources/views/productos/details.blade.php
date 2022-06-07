@@ -9,7 +9,8 @@
     <div class="col s8">
         <h3>Marca: {{ $producto->marca->nombre }} </h3>
         <ul>
-            <li>Precio: US{{$producto->precio}}</li>
+            <li>Precio: US {{$producto->precio}}</li>
+            <li>Descripcion: {{$producto->desc}}</li>
         </ul>
     </div>
     <div class="col s4">
@@ -17,8 +18,10 @@
             <h3>Añadir al carrito </h3>
         </div>
         <div class="row">
-            <form action="" method="POST">
+            <form action="{{route('cart.store') }}" method="POST">
                 @csrf
+                <input type="hidden" name="prod_id"
+                value="{{$producto->id }}">
                 <div class="row">
                     <div class="col s4 input-field">
                         <select name="cantidad" id="cantidad">
@@ -27,6 +30,9 @@
                          <option value="3">3</option>  
                         </select>
                         <label for="cantidad">Cantidad</label>
+                    </div>
+                    <div>
+                        <button class="btn waves-effect waves-light" type="submit" name="action">añadir</button>
                     </div>
                 </div>
             </form>

@@ -18,7 +18,13 @@ class ProductoController extends Controller
      */
     public function index()
     {
-       echo"aqui va el catalogo de productos";
+       
+        //seleccion de todos los productos
+        $productos=Producto::all();
+        //mostrar vista del catalogo pero llevando la lista de productos
+        return view('productos.index')
+                ->with('productos', $productos);
+
     }
 
     /**
@@ -91,7 +97,7 @@ $mensajes = [
         $p->desc=$r->desc;
         $p->precio=$r->precio;
         $p->imagen=$nombre_archivo;
-        $p->marcas_id=$r->marca;
+        $p->marca_id=$r->marca;
         $p->categoria_id=$r->categoria;
   
         $p->save();
@@ -125,7 +131,12 @@ $mensajes = [
      */
     public function show($producto)
     {
-       echo"aqui va la información del producto cuyo id es : $producto";
+       //echo"aqui va la información del producto cuyo id es : $producto";
+       $producto = Producto::find($producto);
+       //mostrar vista de detalles 
+       //llevando el producto seleccionado
+       return view('productos.details')
+       ->with('producto',$producto);
     }
 
     /**

@@ -1,5 +1,16 @@
 @extends('layouts.menu') 
 @section('contenido')
+@if(session('mensajito'))
+
+<div class="row">
+    <strong>
+        {{session('mensajito')}}
+    
+    <a href="{{ route('cart.index') }}" class="">Ir al carrito </a>
+    </strong>
+</div>
+@endif
+
 <div class="row">
     <h1>Catalogo de productos</h1>
 </div>
@@ -14,7 +25,7 @@
                 <img src="{{ asset( 'img/nodisponible.png' )}}" alt="">
             }
             @else
-            <img src="{{ asset('img/'.$producto->imagen) }}"
+            <img src="{{ asset('img/'.$producto->imagen) }}" width="100" height="500"
              alt="">
             @endif
 
